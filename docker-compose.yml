@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+  firebase_webserver:
+    build:
+      context: ./webserver
+    ports:
+      - 80:6000
+    env_file:
+        ./credentials.env
+    volumes:
+        - ./webserver/src:/app
+    container_name: firebase_webserver
+
+  firewatch-db:
+    image: mysql:latest
+    restart: always
+    command: --innodb_use_native_aio=0  #must add this line
+    env_file:
+      ./credentials.env
+    ports:
+      - 3306:3306                     # external port : internal mysql port
+    volumes:
+      - ./firewatch_db:/var/lib/mysql   # persist when container is stopped!
+    container_name: firewatch_db
+
+volumes:
+  firewatch_db:
+
