@@ -1,66 +1,55 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>FireWatch Sign Up page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="Styles.css">
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Nova+Square" />
-    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,900&display=swap" rel="stylesheet">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Page Info -->
+  <title>Register</title>
+  <meta name="author" content="Ming Liu">
+  <meta name="description" content="about us">
+
+  <link rel="stylesheet" type="text/css" href="Styles.css">
+
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Nova+Square" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,900&display=swap" rel="stylesheet">
 </head>
 
-<div class=navigation>
-    <logo_left>
-      <a class ='nav' href="/">FireWatch</a>
-    </logo_left>
-    <a class='nav' href='/goto_signup'>
-      | Sign up | 
-    </a>
-    <a class='nav' href='/goto_aboutus'>
-      | About Us |
-    </a>
-  </div>
- <body>
-   
-<div class='container' style='padding:2rem'>
-    <form name='register_new' method='POST' action='/submit_signup'>
 
-      
-            <Promise class='Italic'>
-               Newsletter Sign Up
-            </Promise>
-            <div class='backgroundbox'>
-                <div>
-                    <input type='text' name='first_name' placeholder="Last Name" class='inputboxes'>
-                </div>
-                <div>
-                    <input type='text' name='last_name' placeholder="First Name" class='inputboxes'>
-                </div>
-                <div>
-                    <input type='text' name='email' placeholder="Email" class='inputboxes'>
-                </div>
-                <button class='buttons' type='submit'>Register</button>
-            </div>
-    </form>
-      
-    <div class='warning' style='color:green'>
-        {% if message is defined %}
-        {{ message }}
-        {% endif %}
-      </div>
-</div>
-  
-</body>
-  
-  <div class=navigation>
-    <logo_left>
-      <a class ='nav' href="/">FireWatch</a>
-    </logo_left>
-    <a class='nav' href='/goto_signup'>
-      | Sign up | 
-    </a>
-    <a class='nav' href='/goto_aboutus'>
-      | About Us |
-    </a>
+<body>
+  <div class="navigation">
+    <a class="navigation dest logo" href="/"> FireWatch </a>
+    <a class="navigation dest register" href="/signup"> Register </a>
+    <a class="navigation dest" href="/pricing_model"> Pricing </a>
+    <a class="navigation dest selected" href="/about_us"> Our Team </a>
+    <a class="navigation dest" href="/product_features"> Features </a>
   </div>
+  <h1>Register for the Newsletter!</h1>
+  <form name='register_new' method='POST' action="/submit_signup">
+
+    <section class="responsive_grid">
+      <div class="field">
+        <label> First Name: &nbsp;</label>
+        <input type='text' name='first_name' class="margin-top-lg">
+        </input>
+      </div>
+
+      <div class="field">
+        <label> Last Name: &nbsp;</label>
+        <input type='text' name='last_name'  class="margin-top-lg">
+        </input>
+      </div>
+
+      <div class='field'>
+        <label> Email: &nbsp;</label>
+        <input type='text' name='email'  class='margin-top-lg'>
+        </input>
+      </div>
+
+    
+    <button type="submit" class='btn large'>Submit</button>
+    </section>
+  </form>
+</body>

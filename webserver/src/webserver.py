@@ -27,8 +27,8 @@ def parse_req(req):
     split_text = convert_to_dict(split_text)
     return split_text
 
-def landing_page(req):
-  return render_to_response('pages/landing_page.html', {}, request=req)
+def home_page(req):
+  return render_to_response('pages/home_page.html', {}, request=req)
 
 def submit_signup(req):
   info = parse_req(req)
@@ -52,12 +52,17 @@ def submit_signup(req):
   print("WORKED UP TO HERE")
   return render_to_response('pages/signup.html', {'message':'Registered Email! Look for more info soon'}, request=req)
 
-def goto_signup(req):
+def signup(req):
   return render_to_response('pages/signup.html', {}, request=req)
 
-def goto_aboutus(req):
+def about_us(req):
   return render_to_response('pages/about_us.html', {}, request=req)
   
+def product_features(req):
+  return render_to_response('pages/product_features.html', {}, request=req)
+
+def pricing_model(req):
+  return render_to_response('pages/pricing_model.html', {}, request=req)
 
 if __name__ == '__main__':
   config = Configurator()
@@ -68,18 +73,25 @@ if __name__ == '__main__':
 ###############################
 
 
-  config.add_route('landing_page', '/')
-  config.add_view(landing_page, route_name='landing_page') #first_page
+  config.add_route('home_page', '/')
+  config.add_view(home_page, route_name='home_page') #first_page
 
   config.add_route('submit_signup', '/submit_signup')
   config.add_view(submit_signup, route_name='submit_signup')
 
-  config.add_route('goto_signup', '/goto_signup')
-  config.add_view(goto_signup, route_name='goto_signup')
+  config.add_route('signup', '/signup')
+  config.add_view(signup, route_name='signup')
 
-  config.add_route('goto_aboutus', '/goto_aboutus')
-  config.add_view(goto_aboutus, route_name='goto_aboutus') #first_page
+  config.add_route('about_us', '/about_us')
+  config.add_view(about_us, route_name='about_us') #first_page
 
+  config.add_route('product_features', '/product_features')
+  config.add_view(product_features, route_name='product_features') #first_page
+
+  config.add_route('pricing_model', '/pricing_model')
+  config.add_view(pricing_model, route_name='pricing_model') #first_page
+
+#           AIzaSyBmdR6qGw3xWKJoqo1LviAVgl50sTcWfBA api key for google maps
 #########################################
 
 

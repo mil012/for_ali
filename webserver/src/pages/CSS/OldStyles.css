@@ -1,0 +1,131 @@
+body {
+    text-align:center;
+    font-size:1rem;
+    font-family: lato;
+    padding:0.5rem;
+    background-color: rgba(230,176,176, 0.5);
+  }
+  
+  .navigation{
+  font-family: Nova Square;
+  overflow: hidden;
+  background-color: #D36135;
+  }
+  
+  
+  
+  a {
+    color: #f2f2f2;
+    text-decoration:none; 
+    cursor:pointer;  
+    float: right;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 1% 0.5%;
+    text-decoration: bold;
+    font-size: 1.6rem;
+  }
+  
+  .navigation nav {
+    float: right;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 1% 0.5;
+    text-decoration: bold;
+    font-size: 1.6rem;
+  }
+  
+  .navigation logo_left{
+  float:left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 1% 1%;
+  text-decoration: bold;
+  font-size: 1.6rem;
+  }
+  
+  .navigation nav:hover{
+  background-color: #ddd;
+  color: black;
+  }
+  
+  input {
+    border: none;
+    background-color:#ffcc99;
+    border-radius:1px;
+    font-size:1rem;
+    border-bottom: 2px solid black;
+    margin:0.11rem 1rem;
+  }
+  .navigation a:hover{
+    background-color: #ddd;
+  color: black;
+  }
+  Promise {
+  font-family: lato;
+  font-size:5rem;
+    margin-bottom:1rem;
+  }
+  
+  Promise.Italics{
+    font-size:4rem;
+  font-style:Italic;
+  text-decoration:underline;
+  }
+  
+  Promise.smaller{
+    font-size: 2rem;
+  }
+  
+  Main_Blurb {
+  font-family: lato;
+  font-size: 2rem;
+  color: #796465;
+  }
+  
+  small_blurb {
+    font-family: lato;
+    font-size:1.5rem;
+    text-align:left;
+  }
+  
+  module {
+    color: black;
+    border:5px solid black;
+    padding:0.08fr 0.1fr 0.2fr 0.2fr;
+    margin-bottom:1rem;
+    background-color: #D36135;
+    border-radius:1px;
+    float:center;
+     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 15px 0 rgba(0, 0, 0, 0.19);
+  }
+  
+  module name{
+    color:black;
+    font-size:3rem;
+  }
+  
+  section.grid {
+    display: grid;
+    margin-top:2rem;
+    grid-template-columns:0.5fr 0.5fr;
+    grid-gap:0.5rem;
+  }
+  
+  @media all and (max-width: 700px){
+    section.grid {
+      grid-template-columns:1fr;
+    }
+  }
+  
+  .buttons {
+    height:30px;
+    margin:1px;
+  
+    background-color:#ffcc99;
+  }
+  
+  img {
+    max-width: 20%;
+    height: auto;
+  }
