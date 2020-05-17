@@ -64,6 +64,9 @@ def product_features(req):
 def pricing_model(req):
   return render_to_response('pages/pricing_model.html', {}, request=req)
 
+def planner(req):
+  return render_to_response('pages/planner.html', {}, request=req)
+
 if __name__ == '__main__':
   config = Configurator()
 
@@ -83,13 +86,16 @@ if __name__ == '__main__':
   config.add_view(signup, route_name='signup')
 
   config.add_route('about_us', '/about_us')
-  config.add_view(about_us, route_name='about_us') #first_page
+  config.add_view(about_us, route_name='about_us') 
 
   config.add_route('product_features', '/product_features')
-  config.add_view(product_features, route_name='product_features') #first_page
+  config.add_view(product_features, route_name='product_features') 
 
   config.add_route('pricing_model', '/pricing_model')
-  config.add_view(pricing_model, route_name='pricing_model') #first_page
+  config.add_view(pricing_model, route_name='pricing_model') 
+
+  config.add_route('planner', '/planner')
+  config.add_view(planner, route_name='planner') 
 
 #           AIzaSyBmdR6qGw3xWKJoqo1LviAVgl50sTcWfBA api key for google maps
 #########################################

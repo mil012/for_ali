@@ -152,7 +152,18 @@ h3:hover {
 }
 
 h4 {
-  font-size: calc(1rem + 1.5vw);
+  border-radius:10px;;
+  transition: transform .3s;
+  background-color: var(--accent-color);
+  color: var(--light-color);
+  padding: var(--padding-lg) var(--padding-xl);
+  margin-left: var(--margin-lg);
+  text-align:right;
+  font-size: calc(1rem + 1.9vw);
+}
+
+h4 a{
+  font-size: calc(1rem + 0.8vw)
 }
 h5 {
   font-size: calc(1rem + 1vw);
@@ -517,3 +528,12 @@ font-weight: bold;
     float:center;
      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 15px 0 rgba(0, 0, 0, 0.19);
   }
+ #map {
+   width: 50%;
+   height: 100%;
+   float:left;
+      }
+html,
+        body {
+            height: 100%;
+        }
