@@ -125,6 +125,7 @@ h2 {
   margin-left: var(--margin-lg);
   margin-right: var(--margin-lg)
   font-size: calc(1rem + 2.7vw);
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 h2:hover {
@@ -281,6 +282,10 @@ table tr:nth-child(odd) {
   padding: var(--padding-lg) var(--padding-xxl);
   align-items: center;
 }
+
+.btn.large.launch {
+  background-color: green;
+} 
 .btn.outline {
   background: rgba(240, 239, 234, 1);
   border: 1px solid var(--dark-color);
@@ -300,8 +305,8 @@ table tr:nth-child(odd) {
 }
 .btn[disabled] {
   color: rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--medium-color);
-  background-color: var(--light-color);
+  border: 5px solid red;
+  background-color: red;
 }
 .btn[disabled]:hover {
   cursor: not-allowed;
@@ -529,7 +534,7 @@ font-weight: bold;
      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 15px 0 rgba(0, 0, 0, 0.19);
   }
  #map {
-   width: 50%;
+   width: 100%;
    height: 100%;
    float:left;
       }

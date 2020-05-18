@@ -13,7 +13,6 @@
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Nova+Square" />
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,900&display=swap" rel="stylesheet">
     <style>
-
         #map {
             height: 100%;
         }
@@ -26,9 +25,9 @@
             padding: 0;
         }
     </style>
-  </head>
+</head>
 
-
+<body onload="btn_disabled()"></body>
 <body>
     <div class="navigation">
         <a class="navigation dest logo" href="/"> FireWatch </a>
@@ -37,32 +36,56 @@
         <a class="navigation dest" href="/about_us"> Our Team </a>
         <a class="navigation dest" href="/product_features"> Features </a>
         <a class="navigation dest" href="/planner"> Planner (beta) </a>
-      </div>
+    </div>
     <h1 id="coordinate">Planner (beta) </h1>
-    <div id="map"></div>
-  
-  <h4>  First waypoint <br> <a id="first"> -- </a> 
-    
-  <br>
-   Second waypoint <br> <a id="second"> -- </a> 
-   <br>
-  
-  
-    Third waypoint <br> <a id="third"> -- </a> 
-  <br>
 
-    </h4>
+    <section class="grid">
+        <h4 id="map"> </h4>
+        <h4> First waypoint <br> <a id="first"> -- </a>
+
+            <br>
+            Second waypoint <br> <a id="second"> -- </a>
+            <br>
+
+
+            Third waypoint <br> <a id="third"> -- </a>
+            <br>
+            <button class="btn large launch" type="button" id="launch-button" onclick=final_launch()>Launch
+                Mission</button>
+        </h4>
+    </section>
 
     <script>
         let marker_num = 0;
         var markers = [];
+        var marker_coords = [];
         var marker_display = ["none", "first", "second", "third"];
         var mark_icon = ["none", "1_icon.png", "2_icon.png", "3_icon.png"];
-        
-     //var drone_img = "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif";
-      
+
+        //var drone_img = "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif";
+
+        function btn_disabled() {
+            document.getElementById("launch-button").disabled = true;
+        }
+        function loadDoc() { //138.68.225.57
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("coordinate").innerHTML = this.responseText;
+                    var response1 = JSON.parse(this.responseText);
+                    if (response1.Status == "Ready") {
+                        document.getElementById("launch-button").disabled = false;
+                    }
+                }
+            };
+            xhttp.open("POST", "http://192.168.99.100/check_status", true);
+            xhttp.send();
+        }
+
+
 
         function initMap() {
+
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 16,
                 center: { lat: 38.6449024, lng: -121.7389839 },
@@ -147,19 +170,25 @@
                     }
                 ]
 
-            });
 
-            
-        function deleteMarkers() {
-            //clearMarkers();
-            initMap()
-          //  marker.setMap(null);
-            markers = [];
-          document.getElementById(marker_display[1]).innerHTML = "--";
-          document.getElementById(marker_display[2]).innerHTML = "--";
-          document.getElementById(marker_display[3]).innerHTML = "--";
-          
-        }
+
+            }
+
+            );
+
+
+            function deleteMarkers() {
+                //clearMarkers();
+                initMap();
+                btn_disabled();
+                //  marker.setMap(null);
+                markers = [];
+                marker_coords = [];
+                document.getElementById(marker_display[1]).innerHTML = "--";
+                document.getElementById(marker_display[2]).innerHTML = "--";
+                document.getElementById(marker_display[3]).innerHTML = "--";
+
+            }
 
             map.addListener('click', function (event) {
                 ++marker_num;
@@ -167,22 +196,39 @@
                     marker_num = 0;
                     deleteMarkers();
                 }
+                if (marker_num == 3) {
+                    loadDoc();
+                }
                 placeMarkerAndPanTo(event.latLng, map);
+                marker_coords.push(event.latLng);
                 document.getElementById(marker_display[marker_num]).innerHTML = event.latLng;
             });
         }
 
         function placeMarkerAndPanTo(latLng, map) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          icon: {url: mark_icon[marker_num], scaledSize: new google.maps.Size(30, 30)}
-        });
-        map.panTo(latLng);
-      }
+            var marker = new google.maps.Marker({
+                position: latLng,
+                map: map,
+                icon: { url: mark_icon[marker_num], scaledSize: new google.maps.Size(30, 30) }
+            });
+            map.panTo(latLng);
+        }
 
+        function final_launch() {
+            var send_stuff = marker_coords.toString();
+            var post_thing = new XMLHttpRequest();
+            post_thing.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("coordinate").innerHTML = this.responseText;
+                    var response1 = JSON.parse(this.responseText);
+                }
+            };
+            post_thing.open("POST", "http://192.168.99.100/launch_command", true);
+            post_thing.send(send_stuff);
+
+        }
         // Shows any markers currently in the array.
-        
+
 
 
 

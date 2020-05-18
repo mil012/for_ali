@@ -19,13 +19,24 @@ REST_SERVER = os.environ.get('REST_SERVER')
 
 
 def convert_to_dict(list):
-    new_dict = {list[i]: list[i + 1] for i in range(0, len(list), 2)}
+
+    new_dict = {"Coord1": {"long":list[0], "lat":list[1]}, "Coord2": {"long":list[2], "lat":list[3]}, "Coord3": {"long":list[4], "lat":list[5]}}
+    print(new_dict)
     return new_dict  
 
 def parse_req(req):
-    split_text = re.split('[= &]', req.text)
-    split_text = convert_to_dict(split_text)
+    str = req.text
+    str = re.split("\(|\)|\),\(|, ", str)
+    for char in str: 
+      if (char == ",") or (char == ""): 
+        str.remove(char)
+
+    print(str)
+    split_text = convert_to_dict(str)
     return split_text
+
+
+
 
 def home_page(req):
   return render_to_response('pages/home_page.html', {}, request=req)
@@ -67,6 +78,18 @@ def pricing_model(req):
 def planner(req):
   return render_to_response('pages/planner.html', {}, request=req)
 
+def check_status(req):  #Insert functions to eventually add this information
+  return {"Status": "Ready", "Trip_time": "CALCULATED TIME", "Battery": "100%"}
+
+def launch_command(req):
+  #THIS IS WHERE YOU GET THE COORDINATES THAT THE DRONE WANTS TO GO
+  print(req.text)
+  split_text = parse_req(req)
+  return {"Status": "Ready", "Trip_time": "CALCULATED TIME", "Battery": "100%"}
+
+
+
+
 if __name__ == '__main__':
   config = Configurator()
 
@@ -96,6 +119,14 @@ if __name__ == '__main__':
 
   config.add_route('planner', '/planner')
   config.add_view(planner, route_name='planner') 
+
+  config.add_route('check_status', '/check_status')
+  config.add_view(check_status, route_name='check_status', renderer="json") 
+
+  config.add_route('launch_command', '/launch_command')
+  config.add_view(launch_command, route_name='launch_command', renderer="json") 
+
+
 
 #           AIzaSyBmdR6qGw3xWKJoqo1LviAVgl50sTcWfBA api key for google maps
 #########################################
