@@ -215,6 +215,7 @@
         }
 
         function final_launch() {
+            document.getElementById("launch-button").innerHTML = "Launched!";
             var send_stuff = marker_coords.toString();
             var post_thing = new XMLHttpRequest();
             post_thing.onreadystatechange = function () {
