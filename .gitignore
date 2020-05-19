@@ -1,2 +1,3 @@
 *.env
 db/
+firewatch_db/

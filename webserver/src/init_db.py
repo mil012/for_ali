@@ -35,11 +35,29 @@ if __name__ == '__main__':
         email        VARCHAR(30) NOT NULL
         );
         """)
-        
 
-        
     except:
         print("Table already exists. Not recreating it.")
+    try:
+        cursor.execute("""
+        CREATE TABLE Coordinates (
+        id integer  AUTO_INCREMENT PRIMARY KEY,
+        1_lat  VARCHAR(50) NOT NULL,
+        1_long  VARCHAR(50) NOT NULL,
+        2_lat  VARCHAR(50) NOT NULL,
+        2_long  VARCHAR(50) NOT NULL,
+        3_lat  VARCHAR(50) NOT NULL,
+        3_long  VARCHAR(50) NOT NULL
+
+
+        );
+        """)
+        
+
+    except:
+        print("UH OH")
+    
+    
 
     cursor.execute("""
         INSERT INTO Users (first_name, last_name, email)

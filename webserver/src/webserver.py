@@ -20,7 +20,7 @@ REST_SERVER = os.environ.get('REST_SERVER')
 
 def convert_to_dict(list):
 
-    new_dict = {"Coord1": {"long":list[0], "lat":list[1]}, "Coord2": {"long":list[2], "lat":list[3]}, "Coord3": {"long":list[4], "lat":list[5]}}
+    new_dict = {"Coord1": {"long":list[1], "lat":list[0]}, "Coord2": {"long":list[3], "lat":list[2]}, "Coord3": {"long":list[5], "lat":list[4]}}
     print(new_dict)
     return new_dict  
 
@@ -35,6 +35,22 @@ def parse_req(req):
     split_text = convert_to_dict(str)
     return split_text
 
+def add_coord(info):
+  load_dotenv('credentials.env')
+  db_user = os.environ['MYSQL_USER']
+  db_pass = os.environ['MYSQL_PASSWORD']
+  db_name = os.environ['MYSQL_DATABASE']
+  db_host = os.environ['MYSQL_HOST']
+  db = mysql.connect(user=db_user, password=db_pass, host=db_host, database=db_name)
+  cursor = db.cursor()
+
+  query = "insert into Coordinates (1_lat, 1_long, 2_lat, 2_long, 3_lat, 3_long) values (%s, %s, %s, %s, %s, %s)"
+  values = (info['Coord1']["lat"],info['Coord1']["long"],info['Coord2']["lat"],info['Coord2']["long"],info['Coord3']["lat"],info['Coord3']["long"])
+  cursor.execute(query, values)
+  db.commit()
+  #print("added user")
+  #docker exec -it 140demodb mysql -uelon -p
+  print("WORKED UP TO HERE")
 
 
 
@@ -85,6 +101,7 @@ def launch_command(req):
   #THIS IS WHERE YOU GET THE COORDINATES THAT THE DRONE WANTS TO GO
   print(req.text)
   split_text = parse_req(req)
+  add_coord(split_text)
   return {"Status": "Ready", "Trip_time": "CALCULATED TIME", "Battery": "100%"}
 
 
@@ -138,3 +155,6 @@ if __name__ == '__main__':
   server = make_server('0.0.0.0', 6000, app)
   server.serve_forever()
 
+
+#Use firewatch_db
+#select * from Users;
