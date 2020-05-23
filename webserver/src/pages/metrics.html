@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Page Info -->
+    <title>Metrics</title>
+    <meta name="author" content="Ming Liu">
+    <meta name="description" content="metrics">
+
+    <link rel="stylesheet" type="text/css" href="Styles.css">
+
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Nova+Square" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,900&display=swap" rel="stylesheet">
+</head>
+
+<body onload="setInterval(updateFunctions(),15000)"></body>
+
+<body>
+    <div class="navigation">
+        <a class="navigation dest logo" href="/"> FireWatch </a>
+        <a class="navigation dest register" href="/signup"> Register </a>
+        <a class="navigation dest" href="/pricing_model"> Pricing </a>
+        <a class="navigation dest" href="/about_us"> Our Team </a>
+        <a class="navigation dest" href="/product_features"> Features </a>
+        <a class="navigation dest selected" href="/metrics"> Metrics </a>
+        <a class="navigation dest" href="/planner"> Planner (beta) </a>
+    </div>
+
+
+    <div class="hero">
+        <h1>To date, we have
+            <div>
+                <a id="num_users" style="font-style:italic">placeholder</a> users who have registered with us! </div>
+
+            <br>
+            <div class="grid">
+                <progress_bar> Frontend progress <b id="Frontend">null</b></progress_bar> <br><br>
+                <progress_bar> Backend progress <b id="Backend">null</b></progress_bar> <br><br>
+
+                <progress_bar> Hardware-progress <b id="Hardware">null</b></progress_bar> <br><br>
+
+                <progress_bar> Business-progress <b id="Business">null</b></progress_bar>
+
+                <br>
+            </div>
+            <h3>
+                We're making good progress on our initial MVP, check back often for status updates!
+            </h3>
+
+        </h1>
+    </div>
+
+
+    <script>
+        var myVar = setInterval(updateFunctions, 10000);
+        function updateFunctions() {
+
+            update_user_count()
+            update_progress()
+        }
+        function update_user_count() {
+            var post_thing = new XMLHttpRequest();
+            post_thing.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+
+                    var response2 = JSON.parse(this.responseText);
+                    document.getElementById("num_users").innerHTML = response2["count"];
+                }
+            };
+            post_thing.open("POST", "/get_count", true);
+            post_thing.send()
+        }
+
+        function update_progress() {
+
+            var post_thing = new XMLHttpRequest();
+            post_thing.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+
+                    var response1 = JSON.parse(this.responseText);
+                    document.getElementById("Frontend").innerHTML = response1["Frontend"];
+                    document.getElementById("Backend").innerHTML = response1["Backend"];
+                    document.getElementById("Business").innerHTML = response1["Business"];
+                    document.getElementById("Hardware").innerHTML = response1["Hardware"];
+                }
+            };
+            post_thing.open("POST", "/get_progress", true);
+            post_thing.send()
+
+
+
+        }
+
+
+
+    </script>
+</body>

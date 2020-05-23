@@ -16,7 +16,7 @@
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Nova+Square" />
   <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,900&display=swap" rel="stylesheet">
 </head>
-
+<body onload="setInterval(updatenews(),15000)"></body>
 <body>
   <div class="navigation">
     <a class="navigation dest logo" href="/"> FireWatch </a>
@@ -24,6 +24,8 @@
     <a class="navigation dest" href="/pricing_model"> Pricing </a>
     <a class="navigation dest" href="/about_us"> Our Team </a>
     <a class="navigation dest" href="/product_features"> Features </a>
+    <a class="navigation dest" href="/metrics"> Metrics </a>
+
     <a class="navigation dest" href="/planner"> Planner (beta) </a>
   </div>
 
@@ -31,12 +33,56 @@
     <h1>Preventing Disaster,
       <br>
       One <a style="font-style:italic">Fire</a> at a Time <br>
-      <img class="dronegif" src="animation.gif" alt="Drone picture flat"/>
+      <img class="dronegif" src="animation.gif" alt="Drone picture flat" />
       <p>
-        <redhighlight>Preventable fires cause billions of dollars property damage each year, not to mention the countless lives that are lost.</redhighlight>
-        <yellowhighlight> <y>Our mission is to one day stop fires before they can start. </y> </yellowhighlight> Our team is developing a drone that can survey large unpopulated areas for fires, and act as an early warning system for firefighters and local officials. Join us!
+        <redhighlight>Preventable fires cause billions of dollars property damage each year, not to mention the
+          countless lives that are lost.</redhighlight>
+        <yellowhighlight>
+          <y>Our mission is to one day stop fires before they can start. </y>
+        </yellowhighlight> Our team is developing a drone that can survey large unpopulated areas for fires, and act as
+        an early warning system for firefighters and local officials. Join us!
       </p>
     </h1>
   </div>
+  <h1> Recent News</h1>
+  <section class='newsgrid'>
+    <h3> <b id="1"> -- </b>---<a id="1_body">--</a> </h3>
+    <h3> <b id="2"> --</b>---<a id="2_body">--</a> </h3>
+    <h3> <b id="3"> -- </b>---<a id="3_body">--</a> </h3>
+    <h3> <b id="4"> -- </b>---<a id="4_body">--</a> </h3>
 
+  </section>
 </body>
+
+<script>
+  var myVar = setInterval(updatenews, 5000);
+  function updatenews() {
+
+    var post_thing = new XMLHttpRequest();
+    post_thing.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+
+        var response1 = JSON.parse(this.responseText);
+        document.getElementById("1").innerHTML = response1["1"];
+        document.getElementById("1_body").innerHTML = response1["1_body"];
+
+        document.getElementById("2").innerHTML = response1["2"];
+
+        document.getElementById("2_body").innerHTML = response1["2_body"];
+
+        document.getElementById("3").innerHTML = response1["3"];
+
+        document.getElementById("3_body").innerHTML = response1["3_body"];
+
+        document.getElementById("4").innerHTML = response1["4"];
+
+        document.getElementById("4_body").innerHTML = response1["4_body"];
+
+
+        
+      }
+    };
+    post_thing.open("POST", "/get_news", true);
+    post_thing.send()
+  }
+</script>

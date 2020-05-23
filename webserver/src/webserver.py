@@ -24,6 +24,12 @@ def convert_to_dict(list):
     print(new_dict)
     return new_dict  
 
+def convert_to_user_dict(list):
+
+    new_dict = {"first_name": list[1], "last_name": list[2], "email": list[3]}
+    print(new_dict)
+    return new_dict 
+
 def parse_req(req):
     str = req.text
     str = re.split("\(|\)|\),\(|, ", str)
@@ -34,6 +40,12 @@ def parse_req(req):
     print(str)
     split_text = convert_to_dict(str)
     return split_text
+
+def parse_user_req(req):
+  
+  split_text = re.split('[= &]', req.text)
+  split_text = convert_to_user_dict(split_text)
+  return split_text
 
 def add_coord(info):
   load_dotenv('credentials.env')
@@ -58,7 +70,8 @@ def home_page(req):
   return render_to_response('pages/home_page.html', {}, request=req)
 
 def submit_signup(req):
-  info = parse_req(req)
+  info = parse_user_req(req)
+  print(info)
   #Users = get_user_data(req)
   #for User in Users:
   #    if info['email'] == User['email']:
@@ -94,6 +107,9 @@ def pricing_model(req):
 def planner(req):
   return render_to_response('pages/planner.html', {}, request=req)
 
+def metrics(req):
+  return render_to_response('pages/metrics.html', {}, request=req)
+
 def check_status(req):  #Insert functions to eventually add this information
   return {"Status": "Ready", "Trip_time": "CALCULATED TIME", "Battery": "100%"}
 
@@ -104,7 +120,41 @@ def launch_command(req):
   add_coord(split_text)
   return {"Status": "Ready", "Trip_time": "CALCULATED TIME", "Battery": "100%"}
 
+def get_progress(req):
+  cat = get_db("Select * from Progress;")
+  print(cat)
 
+  progress = {'Frontend': cat[0][1],'Backend':cat[0][2] ,'Hardware':cat[0][3] ,'Business':cat[0][4]}
+  return progress
+
+def get_count(req):
+  cat = get_db("SELECT COUNT(*) FROM Users;")
+  count = {'count': cat[0]}
+  print(count)
+
+  return count
+
+def get_news(req):
+  count = get_db("SELECT COUNT(*) from News;")
+  cat = get_db("select * from News;")
+  print(cat)
+  new_dict = {"1": cat[0][1], "1_body": cat[0][2], "2": cat[1][1], "2_body": cat[1][2], "3": cat[2][1], "3_body": cat[2][2], "4": cat[3][1], "4_body": cat[3][2]}
+  
+  print(new_dict)
+  return new_dict
+
+def get_db(string_command):
+    load_dotenv('credentials.env')
+    db_user = os.environ['MYSQL_USER']
+    db_pass = os.environ['MYSQL_PASSWORD']
+    db_name = os.environ['MYSQL_DATABASE']
+    db_host = os.environ['MYSQL_HOST']
+    db = mysql.connect(user=db_user, password=db_pass, host=db_host, database=db_name)
+    cursor = db.cursor()
+    cursor.execute(string_command)
+    allrows = cursor.fetchall()        
+    print(allrows)
+    return allrows
 
 
 if __name__ == '__main__':
@@ -136,12 +186,25 @@ if __name__ == '__main__':
 
   config.add_route('planner', '/planner')
   config.add_view(planner, route_name='planner') 
+  
+  config.add_route('metrics', '/metrics')
+  config.add_view(metrics, route_name='metrics')
 
   config.add_route('check_status', '/check_status')
   config.add_view(check_status, route_name='check_status', renderer="json") 
 
   config.add_route('launch_command', '/launch_command')
   config.add_view(launch_command, route_name='launch_command', renderer="json") 
+
+  config.add_route('get_progress', '/get_progress')
+  config.add_view(get_progress, route_name='get_progress', renderer="json")
+
+  config.add_route('get_count', '/get_count')
+  config.add_view(get_count, route_name='get_count', renderer="json")
+
+  config.add_route('get_news', '/get_news')
+  config.add_view(get_news, route_name='get_news', renderer="json")
+
 
 
 

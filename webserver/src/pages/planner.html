@@ -35,7 +35,9 @@
         <a class="navigation dest" href="/pricing_model"> Pricing </a>
         <a class="navigation dest" href="/about_us"> Our Team </a>
         <a class="navigation dest" href="/product_features"> Features </a>
-        <a class="navigation dest" href="/planner"> Planner (beta) </a>
+        <a class="navigation dest" href="/metrics"> Metrics </a>
+
+        <a class="navigation dest selected" href="/planner"> Planner (beta) </a>
     </div>
     <h1 id="coordinate">Planner (beta) </h1>
 
@@ -78,7 +80,7 @@
                     }
                 }
             };
-            xhttp.open("POST", "http://192.168.99.100/check_status", true);
+            xhttp.open("POST", "/check_status", true);
             xhttp.send();
         }
 
@@ -224,7 +226,7 @@
                     var response1 = JSON.parse(this.responseText);
                 }
             };
-            post_thing.open("POST", "http://192.168.99.100/launch_command", true);
+            post_thing.open("POST", "/launch_command", true);
             post_thing.send(send_stuff);
 
         }

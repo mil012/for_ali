@@ -29,7 +29,7 @@
 
 body {
   font-size: calc(1rem + 1vw);
-  background: var(--page-color);
+  background-color: var(--dark-color-alt);
   margin: 0px;
   font-family: var(--font);
 
@@ -51,6 +51,7 @@ ul li {
   text-align:center;
   margin-top: 0;
 }
+
 .hero h1:hover{
   transform: scale(1.05);
   transition: transform .1s;
@@ -69,6 +70,21 @@ ul li {
   transform: scale(1.05);
   transition: transform .1s;
 }
+
+.hero h1 news {
+  border-radius:10px;
+  transition: transform .3s;
+  font-size: calc(1rem + 3vw);
+  padding: var(--padding-lg) var(--padding-xl);
+  text-align:center;
+  font-size: calc(1rem + 2.7vw);
+  width:100%;
+   background-color: var(--soft-color);
+  color: var(--dark-color);
+  
+}
+
+
 
 yellowhighlight{
   color:var(--light-color);
@@ -116,16 +132,44 @@ h1 a {
   color: var(--accent-color)
 }
 h2 {
-  border-radius:10px;;
+  border-radius:10px;
   transition: transform .3s;
   font-size: calc(1rem + 3vw);
   background-color: var(--accent-color);
   color: var(--light-color);
   padding: var(--padding-lg) var(--padding-xl);
   margin-left: var(--margin-lg);
-  margin-right: var(--margin-lg)
+  margin-right: var(--margin-lg);
   font-size: calc(1rem + 2.7vw);
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+progress_bar {
+  
+  
+  padding:15px;
+  float: center;
+max-width: 500px;
+  margin: auto;
+   background-color: var(--soft-color);
+  color: var(--dark-color);
+box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  border-radius:20px;
+}
+
+progress_bar b {
+  align:right;
+  
+  
+  border-color:black;
+  
+   border: 10px solid black;
+  border-radius: 25px;
+  background-color: #4CAF50;
+  text-align: center;
+  line-height: 30px;
+   
+  color: white;
 }
 
 h2:hover {
@@ -152,6 +196,14 @@ h3:hover {
   transition: transform .3s;
 }
 
+h3 a {
+  color: var(--dark-color);
+}
+
+h3 b{
+  color: black;
+  
+}
 h4 {
   border-radius:10px;;
   transition: transform .3s;
@@ -520,6 +572,20 @@ font-weight: bold;
   
   @media all and (max-width: 700px){
     section.grid {
+      grid-template-columns:1fr;
+    }
+  }
+
+  section.newsgrid {
+    display: grid;
+    margin-top:2rem;
+    grid-template-columns:0.5fr 0.5fr;
+    grid-gap:0.5rem;
+    background-color:var(--soft-color)
+  }
+  
+  @media all and (max-width: 700px){
+    section.newsgrid {
       grid-template-columns:1fr;
     }
   }
