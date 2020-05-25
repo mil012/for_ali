@@ -27,7 +27,8 @@
     </style>
 </head>
 
-<body onload="btn_disabled()"></body>
+<body onload="start_page()"></body>
+
 <body>
     <div class="navigation">
         <a class="navigation dest logo" href="/"> FireWatch </a>
@@ -54,43 +55,120 @@
             <br>
             <button class="btn large launch" type="button" id="launch-button" onclick=final_launch()>Launch
                 Mission</button>
+            <button class="btn large" type="button" id="connect" onclick=connect()>Connect to Drone</button>
+            <button class="btn large" type="button" id="disconnect" onclick=disconnect()>Disconnect to
+                Drone</button>
         </h4>
     </section>
 
     <script>
+        var map;
         let marker_num = 0;
-        var markers = [];
         var marker_coords = [];
         var marker_display = ["none", "first", "second", "third"];
         var mark_icon = ["none", "1_icon.png", "2_icon.png", "3_icon.png"];
+        var connected_state = 0;
+        var drone_lat = 38.6449024;
+        var drone_long = -121.7389839;
+        var launch_status = 0;
+        var extra = 0;
 
         //var drone_img = "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif";
+        
+        var icon = {
+        url: "../res/sit_marron.png", // url
+        scaledSize: new google.maps.Size(20, 20), // scaled size
+        origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(0, 0) // anchor
+};
 
-        function btn_disabled() {
+
+
+
+        function start_page() {
+           
             document.getElementById("launch-button").disabled = true;
+            document.getElementById("disconnect").disabled = true;
+            document.getElementById("connect").disabled = false;
+
+            console.log("refreshing start page");
         }
-        function loadDoc() { //138.68.225.57
+
+        function connect() { //138.68.225.57
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("coordinate").innerHTML = this.responseText;
                     var response1 = JSON.parse(this.responseText);
                     if (response1.Status == "Ready") {
-                        document.getElementById("launch-button").disabled = false;
+                        connected_state = 1;
+                        document.getElementById("coordinate").innerHTML = this.responseText;
+                        console.log("connect gotten");
+                        document.getElementById("disconnect").disabled = false;
+                        setInterval(get_position, 5000);
+                        
                     }
                 }
             };
-            xhttp.open("POST", "/check_status", true);
+            xhttp.open("POST", "/connect", true);
             xhttp.send();
         }
 
+        function disconnect() {
+            connected_state = 0;
+            document.getElementById("connect").innerHTML = 'Connect to Drone';
+            document.getElementById("connect").disabled = false;
+             //138.68.225.57
+            var dis = new XMLHttpRequest();
+            dis.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var response1 = JSON.parse(this.responseText);
+                }
+            };
+            dis.open("POST", "/disconnect", true);
+            dis.send();
+        
+        }
 
+        function get_position() {
+            console.log("TRYING POSITION")
+            if( connected_state == 1 && marker_num == 3){
+                document.getElementById("launch-button").disabled = false;
+            }
+            //if (connected_state == 1) {
+                console.log("GETTING POSITION")
+                var get_position = new XMLHttpRequest();
+                get_position.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("connect").innerHTML = 'Connected!';
+                        document.getElementById("connect").disabled = true;
+                        var drone_pos = JSON.parse(this.responseText);
+                        drone_lat = drone_pos.lat;
+                        drone_long = drone_pos.long;
+                        drone_long = drone_long + extra;
+                        //extra = extra+0.0001;
+                        //curr_marker.setMap(null);
+                        console.log("got past assignmtn")
+                        droneSD = {"lat": drone_lat, "lng": drone_long}
+                        var curr_marker = new google.maps.Marker({
+                            position: droneSD,
+                            map: map,
+                            icon: icon
+                        });
+                        console.log("about to pan")
+                        map.panTo(droneSD)     
+                    }
+                };
+                get_position.open("POST", "/get_position", true);
+                get_position.send();
+            }
+        //}
 
         function initMap() {
 
-            var map = new google.maps.Map(document.getElementById('map'), {
+            map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 16,
-                center: { lat: 38.6449024, lng: -121.7389839 },
+                center: { "lat": drone_lat, "lng": drone_long },
                 styles: [
                     { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
                     { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
@@ -184,8 +262,7 @@
                 initMap();
                 btn_disabled();
                 //  marker.setMap(null);
-                markers = [];
-                marker_coords = [];
+                
                 document.getElementById(marker_display[1]).innerHTML = "--";
                 document.getElementById(marker_display[2]).innerHTML = "--";
                 document.getElementById(marker_display[3]).innerHTML = "--";
@@ -193,18 +270,22 @@
             }
 
             map.addListener('click', function (event) {
+                if (connected_state == 1){
+                if (launch_status == 0){
                 ++marker_num;
                 if (marker_num > 3) {
                     marker_num = 0;
                     deleteMarkers();
                 }
-                if (marker_num == 3) {
-                    loadDoc();
-                }
                 placeMarkerAndPanTo(event.latLng, map);
                 marker_coords.push(event.latLng);
                 document.getElementById(marker_display[marker_num]).innerHTML = event.latLng;
-            });
+                }
+            }});
+
+
+
+            ////////////
         }
 
         function placeMarkerAndPanTo(latLng, map) {
@@ -213,10 +294,11 @@
                 map: map,
                 icon: { url: mark_icon[marker_num], scaledSize: new google.maps.Size(30, 30) }
             });
-            map.panTo(latLng);
+           // map.panTo(latLng);
         }
-
+        
         function final_launch() {
+            launch_status = 1;
             document.getElementById("launch-button").innerHTML = "Launched!";
             var send_stuff = marker_coords.toString();
             var post_thing = new XMLHttpRequest();
