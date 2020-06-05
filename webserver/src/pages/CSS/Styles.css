@@ -259,6 +259,7 @@ table tr:nth-child(odd) {
   align-items: center;
   text-align: center;
   margin: calc(2rem + 1vw) auto;
+  margin-top: 5rem;
 }
 .separator::before,
 .separator::after {
@@ -608,3 +609,10 @@ html,
         body {
             height: 100%;
         }
+
+.slideshow {
+  margin-top:var(--margin-xxl);
+  margin-left: var(--margin-lg);
+  margin-right: var(--margin-lg);
+  float:bottom; width:600px; height:400px;
+}

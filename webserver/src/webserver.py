@@ -132,14 +132,17 @@ def get_db(string_command):
     return allrows
 
 
-
 def get_position(req):   #FOR ALI
-    print("position called")
-    #So you want to return a dicitonary of {"lat": "SOMETHING", "long": "Something"}
-    #make sure the coordinates are numbers, not strings
-    #this below is an example
-
-    return {"lat": 38.575764, "long": -121.478851}
+  print("position called")
+  #So you want to return a dicitonary of {"lat": "SOMETHING", "long": "Something"}
+  #make sure the coordinates are numbers, not strings
+  #this below is an example
+  
+  image_name = "download.jpeg"
+  
+  new_image = "/IMAGES/" + image_name
+  
+  return {"lat": 38.575764, "long": -121.478851, "new_image": new_image}
 
 def add_coord_to_sql(info): 
   load_dotenv('credentials.env')

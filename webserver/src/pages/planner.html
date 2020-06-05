@@ -60,6 +60,9 @@
                 Drone</button>
         </h4>
     </section>
+    <div class="separator">Images Taken</div>
+
+
 
     <script>
         var map;
@@ -72,21 +75,21 @@
         var drone_long = -121.7389839;
         var launch_status = 0;
         var extra = 0;
-
+        var old_image = "PLACEHOLDER"
         //var drone_img = "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif";
-        
+
         var icon = {
-        url: "../res/sit_marron.png", // url
-        scaledSize: new google.maps.Size(20, 20), // scaled size
-        origin: new google.maps.Point(0,0), // origin
-        anchor: new google.maps.Point(0, 0) // anchor
-};
+            url: "../res/sit_marron.png", // url
+            scaledSize: new google.maps.Size(20, 20), // scaled size
+            origin: new google.maps.Point(0, 0), // origin
+            anchor: new google.maps.Point(0, 0) // anchor
+        };
 
 
 
 
         function start_page() {
-           
+
             document.getElementById("launch-button").disabled = true;
             document.getElementById("disconnect").disabled = true;
             document.getElementById("connect").disabled = false;
@@ -106,7 +109,7 @@
                         console.log("connect gotten");
                         document.getElementById("disconnect").disabled = false;
                         setInterval(get_position, 5000);
-                        
+
                     }
                 }
             };
@@ -118,7 +121,7 @@
             connected_state = 0;
             document.getElementById("connect").innerHTML = 'Connect to Drone';
             document.getElementById("connect").disabled = false;
-             //138.68.225.57
+            //138.68.225.57
             var dis = new XMLHttpRequest();
             dis.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
@@ -127,41 +130,48 @@
             };
             dis.open("POST", "/disconnect", true);
             dis.send();
-        
+
         }
 
         function get_position() {
             console.log("TRYING POSITION")
-            if( connected_state == 1 && marker_num == 3){
+            if (connected_state == 1 && marker_num == 3) {
                 document.getElementById("launch-button").disabled = false;
             }
             //if (connected_state == 1) {
-                console.log("GETTING POSITION")
-                var get_position = new XMLHttpRequest();
-                get_position.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("connect").innerHTML = 'Connected!';
-                        document.getElementById("connect").disabled = true;
-                        var drone_pos = JSON.parse(this.responseText);
-                        drone_lat = drone_pos.lat;
-                        drone_long = drone_pos.long;
-                        drone_long = drone_long + extra;
-                        //extra = extra+0.0001;
-                        //curr_marker.setMap(null);
-                        console.log("got past assignmtn")
-                        droneSD = {"lat": drone_lat, "lng": drone_long}
-                        var curr_marker = new google.maps.Marker({
-                            position: droneSD,
-                            map: map,
-                            icon: icon
-                        });
-                        console.log("about to pan")
-                        map.panTo(droneSD)     
+            console.log("GETTING POSITION")
+            var get_position = new XMLHttpRequest();
+            get_position.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("connect").innerHTML = 'Connected!';
+                    document.getElementById("connect").disabled = true;
+                    var drone_pos = JSON.parse(this.responseText);
+                    drone_lat = drone_pos.lat;
+                    drone_long = drone_pos.long;
+
+                    var new_image = drone_pos.new_image;
+                    if (new_image != old_image) {
+                        old_image = new_image
+                        generate_image(old_image)
                     }
-                };
-                get_position.open("POST", "/get_position", true);
-                get_position.send();
-            }
+
+                    drone_long = drone_long + extra;
+                    //extra = extra+0.0001;
+                    //curr_marker.setMap(null);
+                    console.log("got past assignmtn")
+                    droneSD = { "lat": drone_lat, "lng": drone_long }
+                    var curr_marker = new google.maps.Marker({
+                        position: droneSD,
+                        map: map,
+                        icon: icon
+                    });
+                    console.log("about to pan")
+                    map.panTo(droneSD)
+                }
+            };
+            get_position.open("POST", "/get_position", true);
+            get_position.send();
+        }
         //}
 
         function initMap() {
@@ -262,7 +272,7 @@
                 initMap();
                 btn_disabled();
                 //  marker.setMap(null);
-                
+
                 document.getElementById(marker_display[1]).innerHTML = "--";
                 document.getElementById(marker_display[2]).innerHTML = "--";
                 document.getElementById(marker_display[3]).innerHTML = "--";
@@ -270,18 +280,19 @@
             }
 
             map.addListener('click', function (event) {
-                if (connected_state == 1){
-                if (launch_status == 0){
-                ++marker_num;
-                if (marker_num > 3) {
-                    marker_num = 0;
-                    deleteMarkers();
+                if (connected_state == 1) {
+                    if (launch_status == 0) {
+                        ++marker_num;
+                        if (marker_num > 3) {
+                            marker_num = 0;
+                            deleteMarkers();
+                        }
+                        placeMarkerAndPanTo(event.latLng, map);
+                        marker_coords.push(event.latLng);
+                        document.getElementById(marker_display[marker_num]).innerHTML = event.latLng;
+                    }
                 }
-                placeMarkerAndPanTo(event.latLng, map);
-                marker_coords.push(event.latLng);
-                document.getElementById(marker_display[marker_num]).innerHTML = event.latLng;
-                }
-            }});
+            });
 
 
 
@@ -294,9 +305,9 @@
                 map: map,
                 icon: { url: mark_icon[marker_num], scaledSize: new google.maps.Size(30, 30) }
             });
-           // map.panTo(latLng);
+            // map.panTo(latLng);
         }
-        
+
         function final_launch() {
             launch_status = 1;
             document.getElementById("launch-button").innerHTML = "Launched!";
@@ -313,17 +324,15 @@
 
         }
         // Shows any markers currently in the array.
-
-
-
-
-
-
-
-/////////////////////////////////
-
-///////////////////////////////
-
+        function generate_image(new_image) {
+            var x = document.createElement("IMG");
+            //new_image is gotton from the get position rest call function
+            x.setAttribute("src", new_image);
+            x.setAttribute("width", "1000");
+            x.setAttribute("height", "600");
+            x.setAttribute("alt", "New image");
+            document.body.appendChild(x);
+        }
     </script>
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmdR6qGw3xWKJoqo1LviAVgl50sTcWfBA&callback=initMap">

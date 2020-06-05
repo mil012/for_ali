@@ -89,6 +89,7 @@ if __name__ == '__main__':
         INSERT INTO News (Date, News)
         VALUE ('May 21, 2020', 'We are close to putting all the components of the project together');""")
         print("ADDED NEWSS SDSDSDSD")
+        
         cursor.execute("""
         INSERT INTO News (Date, News)
         VALUE ('May 20, 2020', "The Hardware progress is almost finished");""")
