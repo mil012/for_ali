@@ -148,12 +148,20 @@
                     var drone_pos = JSON.parse(this.responseText);
                     drone_lat = drone_pos.lat;
                     drone_long = drone_pos.long;
+                        generate_image(drone_pos.new_image)
+                        generate_image(drone_pos.new_image2)
+                        generate_image(drone_pos.new_image3)
+                        generate_image(drone_pos.new_image4)
+                        generate_image(drone_pos.new_image5)
+                        generate_image(drone_pos.new_image6)
+                        generate_image(drone_pos.new_image7)
+                        generate_image(drone_pos.new_image8)
 
-                    var new_image = drone_pos.new_image;
-                    if (new_image != old_image) {
-                        old_image = new_image
-                        generate_image(old_image)
-                    }
+
+                    
+
+
+                   
 
                     drone_long = drone_long + extra;
                     //extra = extra+0.0001;

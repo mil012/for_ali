@@ -138,11 +138,14 @@ def get_position(req):   #FOR ALI
   #make sure the coordinates are numbers, not strings
   #this below is an example
   
-  image_name = "download.jpeg"
   
-  new_image = "/IMAGES/" + image_name
   
-  return {"lat": 38.575764, "long": -121.478851, "new_image": new_image}
+  new_image1 = "/IMAGES/" + "fire1.jpg"
+  new_image2 = "/IMAGES/" + "fire2.jpg"
+  new_image3 = "/IMAGES/" + "fire3.jpg"
+  new_image4 = "/IMAGES/" + "fire4.jpg"
+  
+  return {"lat": 38.575764, "long": -121.478851, "new_image": new_image, "new_image1": new_image1}
 
 def add_coord_to_sql(info): 
   load_dotenv('credentials.env')
